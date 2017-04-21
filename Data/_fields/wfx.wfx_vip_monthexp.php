@@ -1,0 +1,1 @@
+a:7:{i:0;s:2:"id";i:1;s:5:"vipid";i:2;s:3:"exp";i:3;s:5:"month";i:4;s:5:"ctime";s:3:"_pk";s:2:"id";s:5:"_type";a:5:{s:2:"id";s:7:"int(11)";s:5:"vipid";s:7:"int(11)";s:3:"exp";s:7:"int(11)";s:5:"month";s:12:"varchar(255)";s:5:"ctime";s:7:"int(11)";}}

@@ -1,0 +1,1 @@
+Minify 是用PHP5开发的应用，通过遵循一些Yahoo的优化规则来提高网站的性能。它会合并多个CSS或者JavaScript文件，移除一些不必要的空格和注释，进行gzip压缩，并且会设置浏览器的缓存头。Minify 在设计上和Yahoo的 Combo Handler Service非常像，不过Minify可以合并任何你想要合并的JavaScript和CSS文件。

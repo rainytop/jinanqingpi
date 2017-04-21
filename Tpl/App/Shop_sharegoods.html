@@ -1,0 +1,73 @@
+<script type="text/javascript">
+//分享送积分
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+	function getShareImageUrl(){
+		var share_imgurl = "";
+		if("" == share_imgurl){
+			var shareImgObj = document.getElementsByClassName("shareImgUrl")[0];
+			if('undefined' != typeof(shareImgObj)){
+				share_imgurl = shareImgObj.src;
+			}
+		}
+		return window.shareData.imgUrl || share_imgurl;
+	}
+
+	var share_url = "http://{$_SERVER['HTTP_HOST']}__ROOT__/index.php?s=/App/Shop/goods/ppid/{$_SESSION['WAP']['vipid']}/id/{$cache.id}";
+	var share_title="{$cache.name}";
+	var share_content="分销地址:{$_SESSION['WAP']['shopset']['url']}__ROOT__/index.php?s=/App/Shop/goods/ppid/{$_SESSION['WAP']['vipid']}/id/{$cache.id}";
+	var share_img="{$_SESSION['WAP']['shopset']['url']}{$_SESSION['WAP']['shopset']['sharepic']}";
+	window.shareData = window.shareData || {
+		"timeLineLink": share_url,
+		"sendFriendLink": share_url,
+		"weiboLink": share_url,
+		"tTitle": share_title,
+		"tContent": share_content,
+		"fTitle": share_title,
+		"fContent": share_content,
+		"wContent": share_content
+	};
+
+	// 发送给好友
+	WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+		WeixinJSBridge.invoke('sendAppMessage', {
+			"img_url": share_img,
+			"img_width": "640",
+			"img_height": "640",
+			"link": window.shareData.sendFriendLink,
+			"desc": window.shareData.fContent,
+			"title": window.shareData.fTitle
+		}, function (res) {
+			//sendShare(1);
+			//alert("send_msg=" + res.err_msg);
+		})
+	});
+
+	// 分享到朋友圈
+	WeixinJSBridge.on('menu:share:timeline', function (argv) {
+		WeixinJSBridge.invoke('shareTimeline', {
+			"img_url": share_img,
+			"img_width": "640",
+			"img_height": "640",
+			"link": window.shareData.timeLineLink,
+			"desc": window.shareData.tContent,
+			"title": window.shareData.fTitle
+		}, function (res) {
+			//sendShare(2);
+			//alert("timeline=" + res.err_msg);
+		});
+	});
+
+	// 分享到微博
+	WeixinJSBridge.on('menu:share:weibo', function (argv) {
+		WeixinJSBridge.invoke('shareWeibo', {
+			"content": window.shareData.wContent,
+			"url": window.shareData.weiboLink
+		}, function (res) {
+			//sendShare(3);
+			//alert("weibo=" + res.err_msg);
+		});
+	});
+
+
+}, false);
+</script>

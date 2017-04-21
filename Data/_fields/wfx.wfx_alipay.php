@@ -1,0 +1,1 @@
+a:8:{i:0;s:2:"id";i:1;s:6:"switch";i:2;s:10:"alipayname";i:3;s:7:"partner";i:4;s:3:"key";i:5;s:4:"time";s:3:"_pk";s:2:"id";s:5:"_type";a:6:{s:2:"id";s:7:"int(11)";s:6:"switch";s:7:"int(11)";s:10:"alipayname";s:12:"varchar(100)";s:7:"partner";s:12:"varchar(100)";s:3:"key";s:12:"varchar(100)";s:4:"time";s:9:"timestamp";}}

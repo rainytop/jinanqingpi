@@ -1,0 +1,1 @@
+a:8:{i:0;s:2:"id";i:1;s:3:"oid";i:2;s:3:"msg";i:3;s:4:"type";i:4;s:7:"paytype";i:5;s:5:"ctime";s:3:"_pk";s:2:"id";s:5:"_type";a:6:{s:2:"id";s:7:"int(11)";s:3:"oid";s:7:"int(11)";s:3:"msg";s:12:"varchar(255)";s:4:"type";s:7:"int(11)";s:7:"paytype";s:12:"varchar(255)";s:5:"ctime";s:7:"int(11)";}}

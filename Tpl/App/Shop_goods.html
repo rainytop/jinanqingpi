@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+<head>
+    <title>{$cache.name}</title>
+    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/appslider.css" />
+	    <!--组件依赖js begin-->
+	    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+	    <!--组件依赖js end-->		
+		<script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/js/appslider.min.js"></script>
+    	<!--追入购物车角标-->
+		<style>
+		.dtl-shp{position: relative;}
+		.dtl-shp b{position: absolute; padding: 4px; font-size: 0.5em; line-height: 0.5em; background: #FF0000; color: #FFFFFF; right: 0px; border-radius: 30px;}
+		</style>
+</head>
+<body class="back1">
+		<div class="mr-b back2">
+			<notempty name="appalbum">
+			<div id="App-slider">
+					<ul>
+						<foreach name="appalbum" item="vo">
+							<li><a href="#"><img src="{$vo.imgurl}"></a></li>
+						</foreach>					
+					</ul>
+					<div class="dot">
+						<foreach name="appalbum" item="vo">
+							<span></span>
+						</foreach>
+   					</div>
+			</div>
+			</notempty>
+			<empty name="appalbum">
+				<notempty name="apppic">
+					<img src="{$apppic.imgurl}" width="100%">
+				</notempty>
+			</empty>
+			<div class="dtl-c border-b1 ovflw fonts9">
+				<div class="dtl-tt color6 ">{$cache.name}</div>
+				<div class="dtl-prc border-b1">
+					<em class="dtl-prc1 color3">￥<i id="goods-price">{$cache.price}</i></em><em class="color3"></em>&nbsp;&nbsp;<em class="dtl-prc2">￥{$cache.oprice}</em>
+					<em class="fr dtl-sel">已售<eq name="cache.issells" value="1">{$cache.dissells}<else/>{$cache.sells}</eq></em>
+				</div>
+				<div class="dtl-lbl ovflw">
+					<volist name="cache.label" id="vo">
+						<neq name="vo" value="">
+						<span class='fl margin2'><i class="iconfont">&#xe657</i>&nbsp;{$vo}</span>
+						</neq>
+					</volist>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dtl-prt back2 mr-b fonts9 border-t1 border-b1">
+			<eq name="cache.issku" value="1">
+				<div id="sku-wrap">
+					<foreach name="skuinfo" item="vo">
+						<div class="sku" data-attr="">
+						<p class="dtl-pty">{$vo.attrlabel}：</p>
+						<div class="dtl-col ovflw">
+							   <foreach name="vo.allitems" item="vo2">
+							   		<notempty name="vo2.checked">
+							       		<span data-attr = "{$vo2.path}">{$vo2.name}</span>
+							        </notempty>
+						       </foreach>
+						</div>
+					</div>
+					</foreach>
+				</div>
+			</eq>
+			<p class="dtl-pty">数量：</p>
+			<div class="ovflw dtl_num fl">
+				<a href="#" class="dtl_mar1" style="width: 22%" id="goods-dec">-</a>
+				<input type="text" value="1" style="width:30%" class="fl dtl_input dtl_mar1" id="goods-total" disabled="disabled"/>
+				<a href="#" class="" style="width: 22%" id="goods-add">+</a>
+			</div>
+			<span class="fr dtl-sy">剩余：<em id="goods-num">{$cache.num}</em>件</span>
+			<span id="finalsku" data-sku = "" data-skuattr="" style="display: none;"></span>
+			<div class="clr"></div>
+		</div>
+		
+		<div class="dtl-prt back2 fonts9 border-t1">
+			{$cache.content|htmlspecialchars_decode}
+		</div>
+		<div class="insert"></div>
+		<div class="dtl-ft ovflw">
+			<div class=" fl dtl-icon dtl-bck ovflw">
+				<a href="{:U('App/Shop/index')}" class="">
+					<i class="iconfont">&#xe679</i>
+				</a>
+			</div>
+			<div class="dtl-btns">
+				<a href="#" class="fl dtl-btn dtl-buy" id="fastbuy">立即购买</a>
+				<a href="#" class="fl dtl-btn dtl-bke" id="addtocart">加入购物车</a>
+			</div>
+			<div class=" fr dtl-icon ovflw dtl-shp">
+				<a href="{:U('App/Shop/basket/',array('sid'=>0,'lasturl'=>$lasturl))}" class="" id="basket">
+					<i class="iconfont">&#xe6af</i><b id="basketnum">{$basketnum}<empty name="basketnum">0</empty></b>
+				</a>
+			</div>
+		</div>
+		<!--全局封装-->
+		<script type="text/javascript">
+			var goodsid="{$cache.id}";
+			var issku="{$cache.issku}";
+			var vipid="{$_SESSION.WAP.vipid}";
+			var loginback="{$loginback}";
+		</script>
+		<!--封装图集-->
+		<notempty name="appalbum">
+		<script type="text/javascript">
+		 Zepto(function($){		 	
+			$('#App-slider').swipeSlide({
+				autoSwipe : true,
+        		lazyLoad : false,
+        		speed : 3000
+    			},function(i){
+        		$('#App-slider .dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
+    		});
+   		 });
+		</script>
+		</notempty>
+		<!--封装SKU-->
+		<script type="text/javascript">
+			var goodsid="{$cache.id}";
+			var skujson=$.parseJSON('{$skujson}');
+			var skuwrap=$('#sku-wrap');
+			var allsku=$('.sku');
+			var allskuattr=$('.sku span');
+			var finalsku=$('#finalsku');
+			var goodsprice=$('#goods-price');
+			var goodsnum=$('#goods-num');
+			$(allskuattr).on('click',function(){
+				var fasku=$(this).parent().parent('.sku');
+				var fa=$(this).parent();
+				var son=$(fa).find('span');
+				$(fasku).data('attr',$(this).data('attr'));
+				$(son).css({'background':'#FFFFFF','color':'#636363','border':'1px solid #e5e5e5'});
+				$(this).css({'background':'#f7194d','color':'#FFFFFF','border':'1px solid #f7194d'});
+				var str='';
+				var totalsku=0;
+				var totalattr=0;
+				$(allsku).each(function(){
+					var dt=$(this).data('attr');
+					if(dt){
+						str=str+dt+'-';
+						totalattr=totalattr+1;
+					}
+					totalsku=totalsku+1;
+				});
+				str=str.substring(0,str.length-1);
+				if(totalsku==totalattr){
+					str=goodsid+'-'+str;
+					$tmpsku=skujson[str];
+					$(finalsku).data('sku',$tmpsku['sku']);
+					$(finalsku).data('skuattr',$tmpsku['skuattr']);
+					$(goodsnum).html($tmpsku['num']);
+					$(goodsprice).html($tmpsku['price']);
+				}
+				
+			});
+		</script>
+		<!--封装购物车-->
+		<script type="text/javascript">
+			var goodsnum=$('#goods-num');
+			var goodsdec=$('#goods-dec');
+			var goodsadd=$('#goods-add');
+			var goodstotal=$('#goods-total');
+			var goodsprice=$('#goods-price');
+			var addtocart=$('#addtocart');
+			var fastbuy=$('#fastbuy');
+			var basketnum=$('#basketnum');
+			$(goodsadd).on('click',function(){
+				var num=Number($(goodstotal).val());
+				var left=Number($(goodsnum).html());
+				var total=(num+1)<=left?(num+1):left;
+				$(goodstotal).val(total);
+				return false;
+			});
+			$(goodsdec).on('click',function(){
+				var num=Number($(goodstotal).val());
+				var total=(num-1)>=1?(num-1):1;
+				$(goodstotal).val(total);
+				return false;
+			});
+			$(addtocart).on('click',function(){
+				var goodsnum=Number($('#goods-num').html());
+				var num=Number($(goodstotal).val());
+				var finalsku=$('#finalsku');
+				//sku模式
+				if(issku=='1'){
+					if(goodsnum-num<=0){
+						App_gmuMsg('该属性产品库存不足！请调整购买数量或选择其他属性！');
+						return false;
+					}
+					if(!$(finalsku).data('sku')){
+						App_gmuMsg('请选择产品属性！');
+						return false;
+					}
+				}else{
+					if(goodsnum-num<=0){
+						App_gmuMsg('该产品库存不足！请调整购买量或选择其他产品！');
+						return false;
+					}
+				}
+				if(!vipid){
+					var fun=function(){
+						window.location.href=loginback;
+					};
+					App_gmuMsg('您还未登录，2秒后自动跳转登陆界面！',fun);
+					return false;
+				}
+				var sku=$(finalsku).data('sku');
+				var skuattr=$(finalsku).data('skuattr');
+				var price=$(goodsprice).html();
+				var num=$(goodstotal).val();
+				var dt={'sid':0,'goodsid':goodsid,'vipid':vipid,'sku':sku,'num':num};
+				$.ajax({
+					type:"post",
+					url:"{:U('App/Shop/addtobasket')}",
+					dataType:'json',
+					data:dt,
+					success:function(info){if(info['status']){App_gmuMsg(info['msg']);$(basketnum).html(info['total']);}else{App_gmuMsg('发生未知错误,请重新尝试！');}return false;},
+					error:function(xh,obj){
+						App_gmuMsg('通讯失败，请重试！');
+					}
+				});
+				return false;
+			});
+			//立刻购买特效
+			$(fastbuy).on('click',function(){
+				var goodsnum=Number($('#goods-num').html());
+				var num=Number($(goodstotal).val());
+				var finalsku=$('#finalsku');
+				//sku模式
+				if(issku=='1'){
+					if(goodsnum-num<=0){
+						App_gmuMsg('该属性产品库存不足！请调整购买量或选择其他属性！');
+						return false;
+					}
+					if(!$(finalsku).data('sku')){
+						App_gmuMsg('请选择产品属性！');
+						return false;
+					}
+				}else{
+					if(goodsnum-num<=0){
+						App_gmuMsg('该产品库存不足！请调整购买量或选择其他属性！');
+						return false;
+					}
+				}
+				if(!vipid){
+					var fun=function(){
+						window.location.href=loginback;
+					};
+					App_gmuMsg('您还未登录，2秒后自动跳转登陆界面！',fun);
+					return false;
+				}
+				var sku=$(finalsku).data('sku');
+				var skuattr=$(finalsku).data('skuattr');
+				var price=$(goodsprice).html();
+				var num=$(goodstotal).val();
+				var dt={'sid':0,'goodsid':goodsid,'vipid':vipid,'sku':sku,'num':num};
+				//保证订单生成页的返回
+				var orderurl="{:U('App/Shop/orderMake',array('sid'=>0,'lasturl'=>$lasturl))}";
+				var fun=function(){
+								window.location.href=orderurl;
+				};
+				$.ajax({
+					type:"post",
+					url:"{:U('App/Shop/fastbuy')}",
+					dataType:'json',
+					data:dt,
+					success:function(info){if(info['status']){App_gmuMsg(info['msg'],fun);}else{App_gmuMsg('发生未知错误,请重新尝试！');}return false;},
+					error:function(xh,obj){
+						App_gmuMsg('通讯失败，请重试！');
+					}
+				});
+				return false;
+			});
+		</script>
+		<!--通用分享-->
+		<!--新版分享特效-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+	var share_url = "http://{$_SERVER['HTTP_HOST']}__ROOT__/index.php?s=/App/Shop/goods/ppid/{$_SESSION['WAP']['vipid']}/id/{$cache.id}";
+	var share_title="{$cache.name}";
+	var share_content="{$cache.summary}";
+	var share_img="{$_SESSION['WAP']['shopset']['url']}{$apppic.imgurl}";
+	
+  wx.config({
+      debug: false,
+      appId: "{$jsapi['appId']}",
+	  timestamp: "{$jsapi['timestamp']}",
+	  nonceStr: "{$jsapi['nonceStr']}",
+	  signature: "{$jsapi['signature']}",
+      jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+      ]
+  });
+  
+  wx.ready(function () {
+	  	//开启菜单
+	  	wx.showOptionMenu();
+	  	//隐藏菜单
+	  	//wx.hideOptionMenu();
+	    //分享给朋友
+	    wx.onMenuShareAppMessage({
+	      title: share_title,
+	      desc: share_content,
+	      link: share_url,
+	      imgUrl: share_img,
+	      trigger: function (res) {
+	        //alert('用户点击发送给朋友');
+	      },
+	      success: function (res) {
+	        //alert('已分享');
+	      },
+	      cancel: function (res) {
+	        //alert('已取消');
+	      },
+	      fail: function (res) {
+	        //alert(JSON.stringify(res));
+	      }
+	    });
+	    //分享到朋友圈
+	    wx.onMenuShareTimeline({
+	      title: share_title,
+	      link: share_url,
+	      imgUrl: share_img,
+	      trigger: function (res) {
+	        //alert('用户点击分享到朋友圈');
+	      },
+	      success: function (res) {
+	        //alert('已分享');
+	      },
+	      cancel: function (res) {
+	        //alert('已取消');
+	      },
+	      fail: function (res) {
+	        //alert(JSON.stringify(res));
+	      }
+	    });
+	    //分享到QQ
+	    wx.onMenuShareQQ({
+	      title: share_title,
+	      desc: share_content,
+	      link: share_url,
+	      imgUrl: share_img,
+	      trigger: function (res) {
+	        //alert('用户点击分享到QQ');
+	      },
+	      complete: function (res) {
+	        //alert(JSON.stringify(res));
+	      },
+	      success: function (res) {
+	        //alert('已分享');
+	      },
+	      cancel: function (res) {
+	        //alert('已取消');
+	      },
+	      fail: function (res) {
+	        //alert(JSON.stringify(res));
+	      }
+	    });
+  });
+</script>
+	</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <title>{$title}</title>
+    <link rel="stylesheet" href="__PUBLIC__/Common/css/weui.min.css"/>
+    <style type="text/css">
+        .full {
+            width: 100%;
+            /*max-width: 500px;*/
+        }
+
+    </style>
+</head>
+
+<form method="post" action="{:U('')}">
+    {$firstTitle}
+    <input type="text" name="targetName"/>
+
+    <if condition="$secondUsing eq true">
+        <br/>
+        {$secondTitle}
+        <input type="text" value="{$secondValueDefault}" name="secondValue"/>
+    </if>
+
+    <if condition="$thirdUsing eq true">
+        <br/>
+        {$thirdTitle}
+        <input type="text" value="{$thirdValueDefault}" name="thirdValue"/>
+    </if>
+
+    <br/>
+    <button type="submit" class="weui-btn weui-btn_mini weui-btn_primary">生成</button>
+</form>
+<?php
+        if($imgsrc){
+            echo "<img class='full' src='$imgsrc' />";
+}
+?>
+</body>
+</html>
