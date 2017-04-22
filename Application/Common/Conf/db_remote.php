@@ -6,6 +6,6 @@ return array(
     'DB_USER' => 'root',
     'DB_PWD' => 'GQxB4LyasPhD8rqN',
     'DB_PORT' => 3306,
-    'DB_NAME' => 'my_laoqingdao',
+    'DB_NAME' => 'my_jinanqingpi',
     'DB_PREFIX' => 'wfx_',
 );
