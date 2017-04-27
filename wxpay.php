@@ -36,10 +36,10 @@ $wOpt['package'] = 'prepay_id=' . $wOpt['package'];
         }, function (res) {
             if (res.err_msg == 'get_brand_wcpay_request:ok') {
                 //alert('您已成功付款！ ');
-                window.location.href = 'http://<?php echo $_SERVER['HTTP_HOST'];?>/lqd/index.php?s=/App/Shop/orderList/sid/0/';
+                window.location.href = 'http://<?php echo $_SERVER['HTTP_HOST'];?>/jnqp/index.php?s=/App/Shop/orderList/sid/0/';
             } else {
                 //alert('启动微信支付失败, 请检查你的支付参数. 详细错误为: ' + res.err_msg);
-                window.location.href = 'http://<?php echo $_SERVER['HTTP_HOST'];?>/lqd/index.php?s=/App/Shop/orderList/sid/0/';
+                window.location.href = 'http://<?php echo $_SERVER['HTTP_HOST'];?>/jnqp/index.php?s=/App/Shop/orderList/sid/0/';
             }
         });
     }, false);
