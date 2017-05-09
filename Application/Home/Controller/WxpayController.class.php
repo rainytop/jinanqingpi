@@ -322,6 +322,20 @@ class WxpayController extends Controller
                     $re = $wx->sendTemplateMessage($data);
                 }
                 // 插入订单支付成功模板消息结束=================
+
+                //--------------------------------------------
+                //有客户付款成功时，添加通知信息给接受者
+                $infoReceivers= C('ORDER_PAID_NOTICE2OPENIDS');
+                foreach ($infoReceivers as $infoReceiver){
+                    $msg = array();
+                    $msg['touser'] = $infoReceiver;
+                    $msg['msgtype'] = 'text';
+                    //$newUserName= $user['nickname'];
+                    $str = "有新订单支付成功,请及时关注。";
+                    $msg['text'] = array('content' => $str);
+                    $ree = self::$_wx->sendCustomMessage($msg);
+                }
+                //--------------------------------------------
             }
         }
     }
