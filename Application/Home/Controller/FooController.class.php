@@ -239,4 +239,8 @@ class FooController extends Controller
             dump($item);
         }
     }
+
+    public function gettime($time=1494297461){
+
+    }
 }

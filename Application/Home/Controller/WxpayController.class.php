@@ -329,7 +329,7 @@ class WxpayController extends Controller
 
                 $buyer= $order['vipname'];
                 $payTime= $order['paytime'];
-                $payTime= DateHelper::format(getdate($payTime));
+                $payTime= DateHelper::format($payTime);
 
                 $payPrice= $order['payprice'];
                 $msg = array();
@@ -345,8 +345,10 @@ class WxpayController extends Controller
 
                 $orderItems= unserialize($order['items']);
                 //name num
+                $index=0;
                 foreach ($orderItems as $orderItem){
-                    $str.="\t".$orderItem['name']." *".$orderItem['num']."\n" ;
+                    $index++;
+                    $str.="\t$index. ".$orderItem['name']." *".$orderItem['num']."\n" ;
                 }
 
                 $msg['text'] = array('content' => $str);
