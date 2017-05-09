@@ -325,14 +325,34 @@ class WxpayController extends Controller
 
                 //--------------------------------------------
                 //有客户付款成功时，添加通知信息给接受者
+
+                $buyer= $order['vipname'];
+                $payTime= $order['paytime'];
+                $payTime= getdate($payTime);
+
+                $payPrice= $order['payprice'];
+                $msg = array();
+                //$msg['touser'] = $infoReceiver;
+                $msg['msgtype'] = 'text';
+                //$newUserName= $user['nickname'];
+                $str = "有新订单支付成功,请及时关注。\n";
+                $str.= "客户名称：$buyer\n";
+                $str.="支付金额：$payPrice\n";
+                $str.="支付时间：$payTime\n";
+
+                $str.="购物详单：\n";
+
+                $orderItems= unserialize($order['items']);
+                //name num
+                foreach ($orderItems as $orderItem){
+                    $str.=$orderItem['name']." *".$orderItem['num']."\n" ;
+                }
+
+                $msg['text'] = array('content' => $str);
+
                 $infoReceivers= C('ORDER_PAID_NOTICE2OPENIDS');
                 foreach ($infoReceivers as $infoReceiver){
-                    $msg = array();
                     $msg['touser'] = $infoReceiver;
-                    $msg['msgtype'] = 'text';
-                    //$newUserName= $user['nickname'];
-                    $str = "有新订单支付成功,请及时关注。";
-                    $msg['text'] = array('content' => $str);
                     $ree = self::$_wx->sendCustomMessage($msg);
                 }
                 //--------------------------------------------
