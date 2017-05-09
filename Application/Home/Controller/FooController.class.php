@@ -16,6 +16,7 @@ use Think\Controller;
 use Vendor\Hiland\Biz\Tencent\WechatHelper;
 use Vendor\Hiland\Utils\Data\Calendar;
 use Vendor\Hiland\Utils\Data\CalendarHelper;
+use Vendor\Hiland\Utils\Data\ChineseHelper;
 use Vendor\Hiland\Utils\Data\DateHelper;
 use Vendor\Hiland\Utils\Data\StringHelper;
 use Vendor\Hiland\Utils\DataModel\ModelMate;
@@ -219,5 +220,23 @@ class FooController extends Controller
         curl_close($ch);
 
         return $output;
+    }
+
+    public function chineseOp(){
+        $input= "山东省枣庄市高新区";
+
+        $result= ChineseHelper::getFirstChar($input);
+        dump($result);
+
+        $result= ChineseHelper::getPinyin($input);
+        dump($result);
+    }
+
+    public function getnoticeopenids(){
+        $result= C('NEWUSER_REGISTER_NOTICE2OPENIDS');
+        dump($result);
+        foreach ($result as $item){
+            dump($item);
+        }
     }
 }
