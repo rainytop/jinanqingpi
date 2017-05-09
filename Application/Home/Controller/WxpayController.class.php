@@ -6,6 +6,7 @@ namespace Home\Controller;
 
 use Think\Controller;
 use Vendor\Hiland\Biz\Loger\CommonLoger;
+use Vendor\Hiland\Utils\Data\DateHelper;
 
 class WxpayController extends Controller
 {
@@ -328,7 +329,7 @@ class WxpayController extends Controller
 
                 $buyer= $order['vipname'];
                 $payTime= $order['paytime'];
-                $payTime= getdate($payTime);
+                $payTime= DateHelper::format(getdate($payTime));
 
                 $payPrice= $order['payprice'];
                 $msg = array();
@@ -345,7 +346,7 @@ class WxpayController extends Controller
                 $orderItems= unserialize($order['items']);
                 //name num
                 foreach ($orderItems as $orderItem){
-                    $str.=$orderItem['name']." *".$orderItem['num']."\n" ;
+                    $str.="\t".$orderItem['name']." *".$orderItem['num']."\n" ;
                 }
 
                 $msg['text'] = array('content' => $str);
